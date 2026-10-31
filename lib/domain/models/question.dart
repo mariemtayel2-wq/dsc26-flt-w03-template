@@ -17,6 +17,39 @@ final class Question {
   /// TODO(W3): throw a FormatException for a missing or wrongly typed field,
   /// or when `choices` is not a list of 2 to 6 non-empty strings.
   factory Question.fromJson(Map<String, Object?> json) {
-    throw UnimplementedError('Question.fromJson');
+    final id = json['id'];
+    final skillId = json['skillId'];
+    final stem = json['stem'];
+    final choices = json['choices'];
+
+    if (id is! String || id.isEmpty) {
+      throw const FormatException('Missing or empty id');
+    }
+    if (skillId is! String || skillId.isEmpty) {
+      throw const FormatException('Missing or empty skillId');
+    }
+    if (stem is! String || stem.isEmpty) {
+      throw const FormatException('Missing or empty stem');
+    }
+    if (choices is! List || choices.length < 2 || choices.length > 6) {
+      throw const FormatException('Missing or empty choices');
+    }
+
+    final List<String> parsedChoices = [];
+    for (final choice in choices) {
+      if (choice is! String || choice.isEmpty) {
+        throw const FormatException('Invalid choice item');
+      }
+      parsedChoices.add(choice);
+    }
+
+    return Question(
+      id: id,
+      skillId: skillId,
+      stem: stem,
+      choices: parsedChoices,
+    );
   }
+
+  
 }
